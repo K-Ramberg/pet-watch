@@ -65,6 +65,6 @@ class AccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def account_params
-      params.require(:account).permit(:name, :base_service_fee)
+      params.require(:account).permit(:name, :base_service_fee, :minimum_bookable_time, :maximum_bookable_time)
     end
 end

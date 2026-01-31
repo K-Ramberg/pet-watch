@@ -64,4 +64,6 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  # Pin minitest to 5.x; Rails 7.1's line_filtering expects run(reporter, options), minitest 6 uses run(klass, method_name, reporter)
+  gem "minitest", "~> 5.20"
 end

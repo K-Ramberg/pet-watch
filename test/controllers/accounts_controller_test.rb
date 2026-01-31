@@ -17,7 +17,7 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
 
   test "should create account" do
     assert_difference("Account.count") do
-      post accounts_url, params: { account: { base_service_fee: @account.base_service_fee, name: @account.name } }
+      post accounts_url, params: { account: { base_service_fee: @account.base_service_fee, name: @account.name, minimum_bookable_time: @account.minimum_bookable_time, maximum_bookable_time: @account.maximum_bookable_time } }
     end
 
     assert_redirected_to account_url(Account.last)
@@ -34,13 +34,14 @@ class AccountsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update account" do
-    patch account_url(@account), params: { account: { base_service_fee: @account.base_service_fee, name: @account.name } }
+    patch account_url(@account), params: { account: { base_service_fee: @account.base_service_fee, name: @account.name, minimum_bookable_time: @account.minimum_bookable_time, maximum_bookable_time: @account.maximum_bookable_time } }
     assert_redirected_to account_url(@account)
   end
 
   test "should destroy account" do
+    account_without_dependents = accounts(:two)
     assert_difference("Account.count", -1) do
-      delete account_url(@account)
+      delete account_url(account_without_dependents)
     end
 
     assert_redirected_to accounts_url

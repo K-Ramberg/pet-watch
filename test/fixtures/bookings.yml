@@ -1,6 +1,7 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
+  account: one
   first_name: MyString
   last_name: MyString
   pet_name: MyString
@@ -10,10 +11,11 @@ one:
   date_of_service: 2026-01-31 13:23:09
 
 two:
+  account: one
   first_name: MyString
   last_name: MyString
   pet_name: MyString
   pet_type: 1
   expected_fee: 9.99
   time_span: 1
-  date_of_service: 2026-01-31 13:23:09
+  date_of_service: 2026-01-31 15:23:09

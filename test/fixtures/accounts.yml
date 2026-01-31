@@ -3,7 +3,11 @@
 one:
   name: MyString
   base_service_fee: 9.99
+  minimum_bookable_time: 30
+  maximum_bookable_time: 120
 
 two:
   name: MyString
   base_service_fee: 9.99
+  minimum_bookable_time: 30
+  maximum_bookable_time: 120
