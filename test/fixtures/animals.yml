@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  animal_type: 1
+  additional_hour_fee: 9.99
+
+two:
+  animal_type: 1
+  additional_hour_fee: 9.99
