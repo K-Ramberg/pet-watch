@@ -3,6 +3,7 @@ require "test_helper"
 class BookingsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @booking = bookings(:one)
+    @animal = animals(:one) # CreateBookingService looks up Animal by pet_type (animal id)
   end
 
   test "should get index" do
@@ -19,7 +20,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
     # Use a date_of_service that doesn't overlap with existing fixtures (one: 13:23, two: 15:23)
     non_overlapping_time = @booking.date_of_service + 4.hours
     assert_difference("Booking.count") do
-      post bookings_url, params: { booking: { account_id: @booking.account_id, date_of_service: non_overlapping_time, expected_fee: @booking.expected_fee, first_name: @booking.first_name, last_name: @booking.last_name, pet_name: @booking.pet_name, pet_type: @booking.pet_type, time_span: @booking.time_span } }
+      post bookings_url, params: { booking: { account_id: @booking.account_id, date_of_service: non_overlapping_time, expected_fee: @booking.expected_fee, first_name: @booking.first_name, last_name: @booking.last_name, pet_name: @booking.pet_name, pet_type: @animal.id, time_span: @booking.time_span } }
     end
 
     assert_redirected_to booking_url(Booking.last)
@@ -36,7 +37,7 @@ class BookingsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should update booking" do
-    patch booking_url(@booking), params: { booking: { account_id: @booking.account_id, date_of_service: @booking.date_of_service, expected_fee: @booking.expected_fee, first_name: @booking.first_name, last_name: @booking.last_name, pet_name: @booking.pet_name, pet_type: @booking.pet_type, time_span: @booking.time_span } }
+    patch booking_url(@booking), params: { booking: { account_id: @booking.account_id, date_of_service: @booking.date_of_service, expected_fee: @booking.expected_fee, first_name: @booking.first_name, last_name: @booking.last_name, pet_name: @booking.pet_name, pet_type: @animal.id, time_span: @booking.time_span } }
     assert_redirected_to booking_url(@booking)
   end
 
