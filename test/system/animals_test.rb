@@ -15,7 +15,7 @@ class AnimalsTest < ApplicationSystemTestCase
     click_on "New animal"
 
     fill_in "Additional hour fee", with: @animal.additional_hour_fee
-    fill_in "Animal type", with: @animal.animal_type
+    fill_in "Name", with: @animal.name
     click_on "Create Animal"
 
     assert_text "Animal was successfully created"
@@ -27,7 +27,7 @@ class AnimalsTest < ApplicationSystemTestCase
     click_on "Edit this animal", match: :first
 
     fill_in "Additional hour fee", with: @animal.additional_hour_fee
-    fill_in "Animal type", with: @animal.animal_type
+    fill_in "Name", with: @animal.name
     click_on "Update Animal"
 
     assert_text "Animal was successfully updated"
