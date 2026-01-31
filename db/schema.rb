@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_01_31_181043) do
+ActiveRecord::Schema[7.1].define(version: 2026_01_31_182309) do
   create_table "accounts", force: :cascade do |t|
     t.string "name"
     t.decimal "base_service_fee"
@@ -27,5 +27,20 @@ ActiveRecord::Schema[7.1].define(version: 2026_01_31_181043) do
     t.index ["account_id"], name: "index_animals_on_account_id"
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.integer "account_id", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "pet_name"
+    t.integer "pet_type"
+    t.decimal "expected_fee"
+    t.integer "time_span"
+    t.datetime "date_of_service"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_bookings_on_account_id"
+  end
+
   add_foreign_key "animals", "accounts"
+  add_foreign_key "bookings", "accounts"
 end
