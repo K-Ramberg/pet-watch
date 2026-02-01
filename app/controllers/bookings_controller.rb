@@ -4,7 +4,7 @@ class BookingsController < ApplicationController
 
   # GET /bookings or GET /accounts/:account_id/bookings
   def index
-    @bookings = @account ? @account.bookings.includes(:animal) : Booking.includes(:animal).all
+    @bookings = @account ? @account.bookings.includes(:animal).order(:date_of_service) : Booking.includes(:animal).order(:date_of_service)
   end
 
   # GET /bookings/1 or /bookings/1.json

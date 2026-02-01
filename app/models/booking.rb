@@ -17,9 +17,8 @@ class Booking < ApplicationRecord
     max = account.maximum_bookable_time
     return if min.blank? || max.blank?
 
-    allowed_max = max - min
-    if time_span > allowed_max
-      errors.add(:time_span, "must be less than or equal to the account's bookable time range (#{allowed_max})")
+    if time_span > max || time_span < min
+      errors.add(:time_span, "must be greater than or equal to the account's minimum bookable time (#{min}) and less than or equal to the account's maximum bookable time (#{allowed_max})")
     end
   end
 

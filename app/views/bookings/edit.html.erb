@@ -1,10 +1,8 @@
-<h1>Editing booking</h1>
+<h1>Editing Booking</h1>
 
-<%= render "form", booking: @booking, account: @booking.account %>
-
-<br>
-
-<div>
+<div style="margin-bottom: 20px;">
   <%= link_to "Show this booking", @booking %> |
   <%= link_to "Back to bookings", account_bookings_path(@booking.account) %>
 </div>
+
+<%= render "form", booking: @booking, account: @booking.account %>

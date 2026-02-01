@@ -37,13 +37,9 @@
     <%= form.number_field :time_span, min: account&.minimum_bookable_time, max: account&.maximum_bookable_time, value: (booking.time_span || account&.minimum_bookable_time) %>
   </div>
 
-  <div style="margin-top: 20px;">
+  <div style="margin-top: 20px; margin-bottom: 30px;">
     <%= form.label :date_of_service, style: "display: block" %>
     <%= form.datetime_field :date_of_service %>
-  </div>
-
-  <div style="margin-top: 20px; margin-bottom: 40px;">
-    <%= form.submit %>
   </div>
 
   <% if account %>
@@ -57,4 +53,8 @@
       <%= number_to_currency(booking.expected_fee) %>
     </div>
   <% end %>
+
+  <div style="margin-top: 40px;">
+    <%= form.submit style: "background-color:rgb(32, 100, 172); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;" %>
+  </div>
 <% end %>

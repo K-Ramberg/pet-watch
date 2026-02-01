@@ -1,10 +1,6 @@
-<h1>New animal</h1>
+<h1>New Animal</h1>
 
-<%= render "form", animal: @animal, form_url: @account ? account_animals_path(@account) : nil %>
-
-<br>
-
-<div>
+<div style="margin-bottom: 20px;">
   <% if @account %>
     <%= link_to "Back to animals", account_animals_path(@account) %> |
     <%= link_to "Back to account", account_path(@account) %>
@@ -12,3 +8,5 @@
     <%= link_to "Back to animals", animals_path %>
   <% end %>
 </div>
+
+<%= render "form", animal: @animal, form_url: @account ? account_animals_path(@account) : nil %>

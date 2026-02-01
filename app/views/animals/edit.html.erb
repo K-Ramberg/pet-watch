@@ -1,10 +1,8 @@
-<h1>Editing animal</h1>
+<h1>Editing <%= @animal.name %></h1>
 
-<%= render "form", animal: @animal %>
-
-<br>
-
-<div>
+<div style="margin-bottom: 20px;">
   <%= link_to "Show this animal", @animal %> |
   <%= link_to "Back to animals", account_animals_path(@animal.account) %>
 </div>
+
+<%= render "form", animal: @animal %>

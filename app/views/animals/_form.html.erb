@@ -11,17 +11,17 @@
     </div>
   <% end %>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :name, style: "display: block" %>
     <%= form.text_field :name %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :additional_hour_fee, style: "display: block" %>
     <%= form.text_field :additional_hour_fee %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <div style="margin-top: 40px;">
+    <%= form.submit style: "background-color:rgb(32, 100, 172); color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;" %>
   </div>
 <% end %>

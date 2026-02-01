@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<h1><%= @account ? "Bookings for #{@account.name}" : "Bookings" %></h1>
+<h1><%= @account ? "Your Upcoming Bookings" : "Upcoming Bookings" %></h1>
 
 <div style="margin-bottom: 20px;">
   <% if @account %>
@@ -13,9 +13,12 @@
 
 <div id="bookings">
   <% @bookings.each do |booking| %>
-    <%= render booking %>
-    <p>
-      <%= link_to "Show this booking", booking %>
-    </p>
+    <div id="<%= dom_id booking %>" style="border: 2px solid #ccc; border-radius: 5px; padding: 10px; margin-bottom: 10px; background-color: #f0f0f0; width: 30%;">
+      <%= render booking %>
+      <div style="display: flex; gap: 10px;">
+        <%= button_to "Edit this booking", edit_booking_path(booking), method: :get, style: "background-color:rgb(32, 100, 172); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;" %>
+        <%= button_to "Destroy this booking", booking_path(booking), method: :delete, form: { style: "display: inline" }, style: "background-color:rgb(198, 29, 29); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;" %>
+      </div>
+    </div>
   <% end %>
 </div>

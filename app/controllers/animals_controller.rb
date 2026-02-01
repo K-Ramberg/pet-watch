@@ -4,7 +4,7 @@ class AnimalsController < ApplicationController
 
   # GET /animals or GET /accounts/:account_id/animals
   def index
-    @animals = @account ? @account.animals : Animal.all
+    @animals = @account ? @account.animals.order(:name) : Animal.all.order(:name)
   end
 
   # GET /animals/1 or /animals/1.json
@@ -50,11 +50,22 @@ class AnimalsController < ApplicationController
 
   # DELETE /animals/1 or /animals/1.json
   def destroy
-    @animal.destroy!
-
+    if @animal.destroy
+      respond_to do |format|
+        format.html { redirect_to account_animals_path(@animal.account), notice: "Animal was successfully destroyed.", status: :see_other }
+        format.json { head :no_content }
+      end
+    else
+      error_message = @animal.errors.full_messages.join(", ")
+      respond_to do |format|
+        format.html { redirect_to account_animals_path(@animal.account), alert: error_message, status: :see_other }
+        format.json { render json: { errors: @animal.errors }, status: :unprocessable_entity }
+      end
+    end
+  rescue StandardError => e
     respond_to do |format|
-      format.html { redirect_to account_animals_path(@animal.account), notice: "Animal was successfully destroyed.", status: :see_other }
-      format.json { head :no_content }
+      format.html { redirect_to account_animals_path(@animal.account), alert: e.message, status: :see_other }
+      format.json { render json: { error: e.message }, status: :unprocessable_entity }
     end
   end
 
