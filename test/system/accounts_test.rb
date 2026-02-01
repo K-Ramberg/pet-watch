@@ -14,8 +14,10 @@ class AccountsTest < ApplicationSystemTestCase
     visit accounts_url
     click_on "New account"
 
-    fill_in "Base service fee", with: @account.base_service_fee
     fill_in "Name", with: @account.name
+    fill_in "Base service fee", with: @account.base_service_fee
+    fill_in "Maximum bookable time", with: @account.maximum_bookable_time
+    fill_in "Minimum bookable time", with: @account.minimum_bookable_time
     click_on "Create Account"
 
     assert_text "Account was successfully created"
@@ -26,8 +28,10 @@ class AccountsTest < ApplicationSystemTestCase
     visit account_url(@account)
     click_on "Edit this account", match: :first
 
-    fill_in "Base service fee", with: @account.base_service_fee
     fill_in "Name", with: @account.name
+    fill_in "Base service fee", with: @account.base_service_fee
+    fill_in "Maximum bookable time", with: @account.maximum_bookable_time
+    fill_in "Minimum bookable time", with: @account.minimum_bookable_time
     click_on "Update Account"
 
     assert_text "Account was successfully updated"

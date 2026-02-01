@@ -1,4 +1,5 @@
-<%= form_with(model: booking) do |form| %>
+<% account = local_assigns[:account] || booking.account %>
+<%= form_with(model: booking, url: local_assigns[:form_url]) do |form| %>
   <% if booking.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(booking.errors.count, "error") %> prohibited this booking from being saved:</h2>
@@ -11,42 +12,49 @@
     </div>
   <% end %>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :first_name, style: "display: block" %>
     <%= form.text_field :first_name %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :last_name, style: "display: block" %>
     <%= form.text_field :last_name %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :pet_name, style: "display: block" %>
     <%= form.text_field :pet_name %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :pet_type, style: "display: block" %>
-    <%= form.number_field :pet_type %>
+    <%= form.collection_select :pet_type, account&.animals || [], :id, :name, { include_blank: "Select an animal" }, {} %>
   </div>
 
-  <div>
-    <%= form.label :expected_fee, style: "display: block" %>
-    <%= form.text_field :expected_fee %>
-  </div>
-
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :time_span, style: "display: block" %>
-    <%= form.number_field :time_span %>
+    <%= form.number_field :time_span, min: account&.minimum_bookable_time, max: account&.maximum_bookable_time, value: (booking.time_span || account&.minimum_bookable_time) %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px;">
     <%= form.label :date_of_service, style: "display: block" %>
     <%= form.datetime_field :date_of_service %>
   </div>
 
-  <div>
+  <div style="margin-top: 20px; margin-bottom: 40px;">
     <%= form.submit %>
   </div>
+
+  <% if account %>
+    <div style="margin-bottom: 20px; color: blue;" data-controller="expected-fee" data-expected-fee-base-service-fee-value="<%= account.base_service_fee %>" data-expected-fee-minimum-bookable-time-value="<%= account.minimum_bookable_time %>" data-expected-fee-animals-value='<%= raw account.animals.map { |a| { id: a.id, additional_hour_fee: a.additional_hour_fee.to_f } }.to_json %>'>
+      <strong>Expected fee:</strong>
+      <span data-expected-fee-target="display"><%= booking.expected_fee ? number_to_currency(booking.expected_fee) : "—" %></span>
+    </div>
+  <% else %>
+    <div style="margin-bottom: 20px; color: blue;">
+      <strong>Expected fee:</strong>
+      <%= number_to_currency(booking.expected_fee) %>
+    </div>
+  <% end %>
 <% end %>

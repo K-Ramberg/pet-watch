@@ -1,12 +1,7 @@
 <div id="<%= dom_id booking %>">
   <p>
-    <strong>First name:</strong>
-    <%= booking.first_name %>
-  </p>
-
-  <p>
-    <strong>Last name:</strong>
-    <%= booking.last_name %>
+    <strong>Owner name:</strong>
+    <%= booking.last_name %>, <%= booking.first_name %>
   </p>
 
   <p>
@@ -16,22 +11,22 @@
 
   <p>
     <strong>Pet type:</strong>
-    <%= booking.pet_type %>
+    <%= booking.animal&.name %>
   </p>
 
   <p>
     <strong>Expected fee:</strong>
-    <%= booking.expected_fee %>
+    <%= number_to_currency(booking.expected_fee) %>
   </p>
 
   <p>
-    <strong>Time span:</strong>
-    <%= booking.time_span %>
+    <strong>Booking duration:</strong>
+    <%= booking.time_span %> hours
   </p>
 
   <p>
     <strong>Date of service:</strong>
-    <%= booking.date_of_service %>
+    <%= booking.date_of_service.strftime("%B %d, %Y at %I:%M %p") %>
   </p>
 
 </div>

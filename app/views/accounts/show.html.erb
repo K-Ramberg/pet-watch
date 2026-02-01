@@ -6,5 +6,12 @@
   <%= link_to "Edit this account", edit_account_path(@account) %> |
   <%= link_to "Back to accounts", accounts_path %>
 
-  <%= button_to "Destroy this account", @account, method: :delete %>
+  <div style="margin-top: 20px;">
+    <%= button_to "Destroy this account", @account, method: :delete %>
+  </div>
+
+  <div style="margin-top: 20px;">
+    <%= link_to "My Animals", account_animals_path(@account) %> |
+    <%= link_to "My Bookings", account_bookings_path(@account) %>
+  </div>
 </div>

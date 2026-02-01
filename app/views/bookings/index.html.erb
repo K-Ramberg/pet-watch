@@ -1,6 +1,15 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Bookings</h1>
+<h1><%= @account ? "Bookings for #{@account.name}" : "Bookings" %></h1>
+
+<div style="margin-bottom: 20px;">
+  <% if @account %>
+    <%= link_to "Create new booking", new_account_booking_path(@account) %> |
+    <%= link_to "Back to account", account_path(@account) %>
+  <% else %>
+    <%= link_to "New booking", new_booking_path %>
+  <% end %>
+</div>
 
 <div id="bookings">
   <% @bookings.each do |booking| %>
@@ -10,5 +19,3 @@
     </p>
   <% end %>
 </div>
-
-<%= link_to "New booking", new_booking_path %>

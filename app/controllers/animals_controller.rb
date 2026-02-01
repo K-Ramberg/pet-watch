@@ -1,31 +1,32 @@
 class AnimalsController < ApplicationController
+  before_action :set_account, only: %i[ index new create ]
   before_action :set_animal, only: %i[ show edit update destroy ]
 
-  # GET /animals or /animals.json
+  # GET /animals or GET /accounts/:account_id/animals
   def index
-    @animals = Animal.all
+    @animals = @account ? @account.animals : Animal.all
   end
 
   # GET /animals/1 or /animals/1.json
   def show
   end
 
-  # GET /animals/new
+  # GET /animals/new or GET /accounts/:account_id/animals/new
   def new
-    @animal = Animal.new
+    @animal = @account ? @account.animals.build : Animal.new
   end
 
   # GET /animals/1/edit
   def edit
   end
 
-  # POST /animals or /animals.json
+  # POST /animals or POST /accounts/:account_id/animals
   def create
-    @animal = Animal.new(animal_params)
+    @animal = @account ? @account.animals.build(animal_params) : Animal.new(animal_params)
 
     respond_to do |format|
       if @animal.save
-        format.html { redirect_to @animal, notice: "Animal was successfully created." }
+        format.html { redirect_to @account ? account_animals_path(@account) : @animal, notice: "Animal was successfully created." }
         format.json { render :show, status: :created, location: @animal }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -52,18 +53,20 @@ class AnimalsController < ApplicationController
     @animal.destroy!
 
     respond_to do |format|
-      format.html { redirect_to animals_path, notice: "Animal was successfully destroyed.", status: :see_other }
+      format.html { redirect_to account_animals_path(@animal.account), notice: "Animal was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_account
+      @account = Account.find(params[:account_id]) if params[:account_id].present?
+    end
+
     def set_animal
       @animal = Animal.find(params[:id])
     end
 
-    # Only allow a list of trusted parameters through.
     def animal_params
       params.require(:animal).permit(:account_id, :name, :additional_hour_fee)
     end

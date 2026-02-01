@@ -1,9 +1,14 @@
 <h1>New booking</h1>
 
-<%= render "form", booking: @booking %>
+<%= render "form", booking: @booking, form_url: @account ? account_bookings_path(@account) : nil, account: @account %>
 
 <br>
 
 <div>
-  <%= link_to "Back to bookings", bookings_path %>
+  <% if @account %>
+    <%= link_to "Back to bookings", account_bookings_path(@account) %> |
+    <%= link_to "Back to account", account_path(@account) %>
+  <% else %>
+    <%= link_to "Back to accounts", accounts_path %>
+  <% end %>
 </div>

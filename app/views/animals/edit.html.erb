@@ -6,5 +6,5 @@
 
 <div>
   <%= link_to "Show this animal", @animal %> |
-  <%= link_to "Back to animals", animals_path %>
+  <%= link_to "Back to animals", account_animals_path(@animal.account) %>
 </div>

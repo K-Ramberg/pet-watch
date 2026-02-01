@@ -22,6 +22,16 @@
   </div>
 
   <div>
+    <%= form.label :maximum_bookable_time, style: "display: block" %>
+    <%= form.number_field :maximum_bookable_time %>
+  </div>
+
+  <div>
+    <%= form.label :minimum_bookable_time, style: "display: block" %>
+    <%= form.number_field :minimum_bookable_time %>
+  </div>
+
+  <div>
     <%= form.submit %>
   </div>
 <% end %>

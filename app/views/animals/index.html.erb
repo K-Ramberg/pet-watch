@@ -1,6 +1,6 @@
 <p style="color: green"><%= notice %></p>
 
-<h1>Animals</h1>
+<h1><%= @account ? "Animals for #{@account.name}" : "Animals" %></h1>
 
 <div id="animals">
   <% @animals.each do |animal| %>
@@ -11,4 +11,9 @@
   <% end %>
 </div>
 
-<%= link_to "New animal", new_animal_path %>
+<% if @account %>
+  <%= link_to "New animal", new_account_animal_path(@account) %> |
+  <%= link_to "Back to account", account_path(@account) %>
+<% else %>
+  <%= link_to "New animal", new_animal_path %>
+<% end %>

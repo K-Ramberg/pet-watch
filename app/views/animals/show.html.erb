@@ -4,7 +4,7 @@
 
 <div>
   <%= link_to "Edit this animal", edit_animal_path(@animal) %> |
-  <%= link_to "Back to animals", animals_path %>
+  <%= link_to "Back to animals", account_animals_path(@animal.account) %>
 
   <%= button_to "Destroy this animal", @animal, method: :delete %>
 </div>

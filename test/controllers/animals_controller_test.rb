@@ -6,21 +6,21 @@ class AnimalsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "should get index" do
-    get animals_url
+    get account_animals_url(@animal.account)
     assert_response :success
   end
 
   test "should get new" do
-    get new_animal_url
+    get new_account_animal_url(@animal.account)
     assert_response :success
   end
 
   test "should create animal" do
     assert_difference("Animal.count") do
-      post animals_url, params: { animal: { account_id: @animal.account_id, additional_hour_fee: @animal.additional_hour_fee, name: @animal.name } }
+      post account_animals_url(@animal.account), params: { animal: { account_id: @animal.account_id, additional_hour_fee: @animal.additional_hour_fee, name: @animal.name } }
     end
 
-    assert_redirected_to animal_url(Animal.last)
+    assert_redirected_to account_animals_url(@animal.account)
   end
 
   test "should show animal" do
@@ -43,6 +43,6 @@ class AnimalsControllerTest < ActionDispatch::IntegrationTest
       delete animal_url(@animal)
     end
 
-    assert_redirected_to animals_url
+    assert_redirected_to account_animals_url(@animal.account)
   end
 end

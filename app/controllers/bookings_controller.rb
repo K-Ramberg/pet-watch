@@ -1,33 +1,42 @@
 class BookingsController < ApplicationController
+  before_action :set_account, only: %i[ index new create ]
   before_action :set_booking, only: %i[ show edit update destroy ]
 
-  # GET /bookings or /bookings.json
+  # GET /bookings or GET /accounts/:account_id/bookings
   def index
-    @bookings = Booking.all
+    @bookings = @account ? @account.bookings.includes(:animal) : Booking.includes(:animal).all
   end
 
   # GET /bookings/1 or /bookings/1.json
   def show
   end
 
-  # GET /bookings/new
+  # GET /bookings/new or GET /accounts/:account_id/bookings/new
   def new
-    @booking = Booking.new
+    @booking = @account ? @account.bookings.build : Booking.new
   end
 
   # GET /bookings/1/edit
   def edit
   end
 
-  # POST /bookings or /bookings.json
+  # POST /bookings or POST /accounts/:account_id/bookings
   def create
-    account = Account.find_or_create_by(id: booking_params[:account_id])
+    account = @account || (Account.find(booking_params[:account_id]) if booking_params[:account_id].present?)
+    unless account
+      @booking = Booking.new(booking_params)
+      @booking.errors.add(:account, "must exist")
+      return respond_to do |format|
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @booking.errors, status: :unprocessable_entity }
+      end
+    end
     result = CreateBookingService.call(account: account, **booking_params_for_service)
 
     respond_to do |format|
       if result.success?
         @booking = result.booking
-        format.html { redirect_to @booking, notice: "Booking was successfully created." }
+        format.html { redirect_to @account ? account_bookings_path(@account) : @booking, notice: "Booking was successfully created." }
         format.json { render :show, status: :created, location: @booking }
       else
         @booking = result.booking
@@ -78,17 +87,20 @@ class BookingsController < ApplicationController
 
     respond_to do |format|
       if result.success?
-        format.html { redirect_to bookings_path, notice: "Booking was successfully destroyed.", status: :see_other }
+        format.html { redirect_to account_bookings_path(@booking.account), notice: "Booking was successfully destroyed.", status: :see_other }
         format.json { head :no_content }
       else
-        format.html { redirect_to bookings_path, alert: result.errors&.full_messages&.to_sentence.presence || "Could not destroy booking.", status: :see_other }
+        format.html { redirect_to account_bookings_path(@booking.account), alert: result.errors&.full_messages&.to_sentence.presence || "Could not destroy booking.", status: :see_other }
         format.json { render json: result.errors, status: :unprocessable_entity }
       end
     end
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    def set_account
+      @account = Account.find(params[:account_id]) if params[:account_id].present?
+    end
+
     def set_booking
       @booking = Booking.find(params[:id])
     end

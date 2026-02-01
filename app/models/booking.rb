@@ -1,5 +1,6 @@
 class Booking < ApplicationRecord
   belongs_to :account, inverse_of: :bookings
+  belongs_to :animal, class_name: "Animal", foreign_key: :pet_type, optional: true
 
   validates :pet_type, presence: true
   validates :expected_fee, presence: true, numericality: { greater_than: 0 }
@@ -26,11 +27,11 @@ class Booking < ApplicationRecord
     return if date_of_service.blank? || time_span.blank? || account_id.blank?
 
     start_time = date_of_service
-    end_time = date_of_service + time_span.minutes
+    end_time = date_of_service + time_span.hours
 
     conflicting = account.bookings.where.not(id: id).any? do |other|
       other_start = other.date_of_service
-      other_end = other.date_of_service + other.time_span.minutes
+      other_end = other.date_of_service + other.time_span.hours
       start_time < other_end && other_start < end_time
     end
 
