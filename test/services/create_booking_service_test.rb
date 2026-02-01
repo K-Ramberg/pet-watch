@@ -28,8 +28,9 @@ class CreateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "calculates expected_fee from base_service_fee and animal additional_hour_fee" do
-    # expected_fee = base_service_fee + (animal_additional_hour_fee * time_span)
-    # 9.99 + (9.99 * 2) = 9.99 + 19.98 = 29.97
+    # expected_fee = base_service_fee + (animal_additional_hour_fee * additional_hours)
+    # additional_hours = time_span - minimum_bookable_time = 2 - 1 = 1
+    # 9.99 + (9.99 * 1) = 9.99 + 9.99 = 19.98
     result = CreateBookingService.call(
       account: @account,
       first_name: "Jane",
@@ -41,7 +42,7 @@ class CreateBookingServiceTest < ActiveSupport::TestCase
     )
 
     assert result.booking.persisted?
-    assert_equal 29.97, result.booking.expected_fee
+    assert_equal 19.98, result.booking.expected_fee
   end
 
   test "returns failure with errors when validation fails" do
@@ -63,12 +64,13 @@ class CreateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "raises when pet_type is blank" do
+    # time_span 2 so additional_hours > 0 and animal_additional_hour_fee is called
     error = assert_raises(RuntimeError) do
       CreateBookingService.call(
         account: @account,
         first_name: "Jane",
         pet_type: nil,
-        time_span: 1,
+        time_span: 2,
         date_of_service: @date_of_service
       )
     end
@@ -76,12 +78,13 @@ class CreateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "raises when animal is not found for pet_type" do
+    # time_span 2 so additional_hours > 0 and animal_additional_hour_fee is called
     error = assert_raises(RuntimeError) do
       CreateBookingService.call(
         account: @account,
         first_name: "Jane",
         pet_type: 99999,
-        time_span: 1,
+        time_span: 2,
         date_of_service: @date_of_service
       )
     end

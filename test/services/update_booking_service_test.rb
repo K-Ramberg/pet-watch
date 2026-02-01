@@ -26,8 +26,11 @@ class UpdateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "recalculates expected_fee when time_span or pet_type changes" do
-    # expected_fee = base_service_fee + (animal_additional_hour_fee * time_span)
-    # 9.99 + (9.99 * 3) = 9.99 + 29.97 = 39.96
+    # expected_fee = base_service_fee + (animal_additional_hour_fee * additional_hours)
+    # additional_hours = time_span - minimum_bookable_time = 3 - 1 = 2
+    # 9.99 + (9.99 * 2) = 9.99 + 19.98 = 29.97
+    # Use date that won't overlap with booking two (15:23-16:23) when time_span is 3
+    non_overlapping_date = Time.zone.parse("2026-01-31 17:23:09")
     result = UpdateBookingService.call(
       booking: @booking,
       first_name: @booking.first_name,
@@ -35,11 +38,11 @@ class UpdateBookingServiceTest < ActiveSupport::TestCase
       pet_name: @booking.pet_name,
       pet_type: @animal.id,
       time_span: 3,
-      date_of_service: @booking.date_of_service
+      date_of_service: non_overlapping_date
     )
 
     assert result.success?
-    assert_equal 39.96, result.booking.expected_fee
+    assert_equal 29.97, result.booking.expected_fee
   end
 
   test "returns failure with errors when validation fails" do
@@ -61,12 +64,13 @@ class UpdateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "raises when pet_type is blank" do
+    # time_span 2 so additional_hours > 0 and animal_additional_hour_fee is called
     error = assert_raises(RuntimeError) do
       UpdateBookingService.call(
         booking: @booking,
         first_name: @booking.first_name,
         pet_type: nil,
-        time_span: @booking.time_span,
+        time_span: 2,
         date_of_service: @booking.date_of_service
       )
     end
@@ -74,12 +78,13 @@ class UpdateBookingServiceTest < ActiveSupport::TestCase
   end
 
   test "raises when animal is not found for pet_type" do
+    # time_span 2 so additional_hours > 0 and animal_additional_hour_fee is called
     error = assert_raises(RuntimeError) do
       UpdateBookingService.call(
         booking: @booking,
         first_name: @booking.first_name,
         pet_type: 99999,
-        time_span: @booking.time_span,
+        time_span: 2,
         date_of_service: @booking.date_of_service
       )
     end
