@@ -30,6 +30,14 @@ As it stands, the curent use of the app involves an open account CRUD level to w
 
 The current flow allows for the initial creation of an account, from which Animals and Bookings records can be generated. I've traded away some simplicity of pricing configuration for flexibility in adjusting supported service ranges, animals and their attached fees. The flexibility allows for a generalized pricing concern `Bookingable` to house the final booking fee logic. The front-end copies this logic to indicate expected fees while filling out the Booking form, updated with the built in Hotwire package (I'd have liked to more efficiently consolidated the logic but was limited by some unfamiliarity in the distance from my React comfort zone).
 
+Animals Index example
+
+![Animals Index example](Screenshot 2026-02-01 at 7.06.20 PM.png)
+
+Bookings Index example
+
+![Bookings Index example](Screenshot 2026-02-01 at 7.06.32 PM.png)
+
 ## Running tests
 
 Run the full test suite:
