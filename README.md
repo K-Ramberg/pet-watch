@@ -32,11 +32,11 @@ The current flow allows for the initial creation of an account, from which Anima
 
 Animals Index example
 
-![Animals Index example](Screenshot 2026-02-01 at 7.06.20 PM.png)
+![Animals Index example](app/assets/images/Screenshot 2026-02-01 at 7.06.20 PM.png)
 
 Bookings Index example
 
-![Bookings Index example](Screenshot 2026-02-01 at 7.06.32 PM.png)
+![Bookings Index example](app/assets/images/Screenshot 2026-02-01 at 7.06.32 PM.png)
 
 ## Running tests
 

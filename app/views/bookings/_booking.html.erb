@@ -28,4 +28,10 @@
     <strong>Date of service:</strong>
     <%= booking.date_of_service.strftime("%B %d, %Y at %I:%M %p") %>
   </p>
+
+  <% if booking.booking_past_due_date? %>
+    <p style="color: red;">
+      <strong>Booking is past due</strong>
+    </p>
+  <% end %>
 </div>

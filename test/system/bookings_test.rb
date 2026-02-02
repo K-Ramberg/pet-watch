@@ -22,7 +22,7 @@ class BookingsTest < ApplicationSystemTestCase
     fill_in "First name", with: "Jane"
     fill_in "Last name", with: "Doe"
     fill_in "Pet name", with: "Rex"
-    select @animal.name, from: "Pet type"
+    select @animal.name, from: "Pet type", match: :first
     fill_in "Time span", with: "2"
     fill_in "Date of service", with: @non_overlapping_datetime.strftime("%Y-%m-%dT%H:%M")
     click_on "Create Booking"
@@ -50,10 +50,13 @@ class BookingsTest < ApplicationSystemTestCase
     fill_in "First name", with: "Jane"
     fill_in "Last name", with: "Doe"
     fill_in "Pet name", with: "Rex"
-    select @animal.name, from: "Pet type"
+    select @animal.name, from: "Pet type", match: :first
     fill_in "Time span", with: "2"
-    # Overlap with booking one (13:23, time_span 1 -> 13:23-14:23)
-    fill_in "Date of service", with: Time.zone.parse("2026-01-31 13:30:00").strftime("%Y-%m-%dT%H:%M")
+    # Set datetime via script so the value is not mangled by the browser (overlaps booking one: 13:23-14:23)
+    page.execute_script(<<~JS)
+      var el = document.querySelector('input[name="booking[date_of_service]"]');
+      if (el) { el.value = '2026-01-31T13:23'; }
+    JS
     click_on "Create Booking"
 
     assert_text "error"
@@ -65,6 +68,7 @@ class BookingsTest < ApplicationSystemTestCase
     click_on "Edit this booking", match: :first
 
     assert_selector "h1", text: "Editing Booking"
+    select @animal.name, from: "Pet type", match: :first
     fill_in "First name", with: "Updated"
     fill_in "Last name", with: "Client"
     click_on "Update Booking"

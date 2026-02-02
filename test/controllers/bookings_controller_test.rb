@@ -1,9 +1,17 @@
 require "test_helper"
 
 class BookingsControllerTest < ActionDispatch::IntegrationTest
+  include ActiveSupport::Testing::TimeHelpers
+
   setup do
+    # Freeze time so fixture dates (2026-01-31) are still in the future
+    travel_to Time.zone.parse("2026-01-31 12:00:00")
     @booking = bookings(:one)
     @animal = animals(:one) # CreateBookingService looks up Animal by pet_type (animal id)
+  end
+
+  teardown do
+    travel_back
   end
 
   test "should get index" do

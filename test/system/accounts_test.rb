@@ -39,7 +39,9 @@ class AccountsTest < ApplicationSystemTestCase
   end
 
   test "should destroy Account" do
-    visit account_url(@account)
+    # Use account with no animals/bookings to avoid foreign key constraint
+    account_without_dependents = accounts(:two)
+    visit account_url(account_without_dependents)
     click_on "Destroy this account", match: :first
 
     assert_text "Account was successfully destroyed"

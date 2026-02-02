@@ -3,10 +3,18 @@
 require "test_helper"
 
 class UpdateBookingServiceTest < ActiveSupport::TestCase
+  include ActiveSupport::Testing::TimeHelpers
+
   setup do
+    # Freeze time so fixture dates (2026-01-31) are still in the future
+    travel_to Time.zone.parse("2026-01-31 12:00:00")
     @booking = bookings(:one)
     @account = @booking.account
     @animal = animals(:one)
+  end
+
+  teardown do
+    travel_back
   end
 
   test "updates a booking with valid attributes" do

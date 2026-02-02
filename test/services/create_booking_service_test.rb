@@ -3,11 +3,19 @@
 require "test_helper"
 
 class CreateBookingServiceTest < ActiveSupport::TestCase
+  include ActiveSupport::Testing::TimeHelpers
+
   setup do
+    # Freeze time so fixture dates (2026-01-31) are still in the future
+    travel_to Time.zone.parse("2026-01-31 12:00:00")
     @account = accounts(:one)
     @animal = animals(:one)
     # Use a time that doesn't overlap existing bookings (one: 13:23, two: 15:23)
     @date_of_service = Time.zone.parse("2026-01-31 17:23:09")
+  end
+
+  teardown do
+    travel_back
   end
 
   test "creates a booking with valid attributes" do
